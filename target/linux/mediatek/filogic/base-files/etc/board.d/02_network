@@ -11,8 +11,7 @@ mediatek_setup_interfaces()
 	abt,asr3000|\
 	cmcc,rax3000m|\
 	clt,r30b1|\
-        edup,rt2980|\
-        edup,rt2980n|\
+        clt,r30b1-112m|\
 	h3c,magic-nx30-pro|\
 	netis,nx31|\
 	nokia,ea0326gmp|\

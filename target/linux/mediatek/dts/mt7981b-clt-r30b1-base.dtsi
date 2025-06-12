@@ -8,9 +8,6 @@
 #include "mt7981b.dtsi"
 
 / {
-    model = "CLT R30B1";
-    compatible = "clt,r30b1", "mediatek,mt7981";
-
     aliases {
         serial0 = &uart0;
         label-mac-device = &gmac0;

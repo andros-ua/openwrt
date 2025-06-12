@@ -3,6 +3,10 @@
 
 #include "mt7981b-clt-r30b1-base.dtsi"
 
+ / {
+    model = "CLT R30B1 (112m ubi)";
+    compatible = "clt,r30b1-112m", "mediatek,mt7981";
+ };
 
 &spi0 {
 	pinctrl-names = "default";

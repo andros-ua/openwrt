@@ -7,8 +7,7 @@ board_config_update
 
 case $board in
 clt,r30b1|\
-edup,rt2980|\
-edup,rt2980n)
+clt,r30b1-112m)
 	ucidef_set_led_default "green" "GREEN" "led_green" "1"
 	ucidef_set_led_default "red" "RED" "led_red" "0"
 	;;
