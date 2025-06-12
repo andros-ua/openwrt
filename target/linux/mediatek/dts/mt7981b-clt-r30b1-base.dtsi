@@ -9,7 +9,7 @@
 
 / {
     model = "CLT R30B1";
-    compatible = "clt,r30b1", "edup,rt2980", "mediatek,mt7981";
+    compatible = "clt,r30b1", "mediatek,mt7981";
 
     aliases {
         serial0 = &uart0;
