@@ -4,7 +4,7 @@
 #include "mt7981b-clt-r30b1-base.dtsi"
 
  / {
-    model = "CLT R30B1";
+    model = "CLT-R30B1";
     compatible = "clt,r30b1", "mediatek,mt7981";
  };
 

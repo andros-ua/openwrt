@@ -13,9 +13,9 @@
         label-mac-device = &gmac0;
 
         led-boot = &led_status_red;
-		led-failsafe = &led_status_red;
-		led-running = &led_status_green;
-		led-upgrade = &led_status_green;
+	led-failsafe = &led_status_red;
+	led-running = &led_status_green;
+	led-upgrade = &led_status_green;
 
     };
 
@@ -52,8 +52,6 @@
 			gpios = <&pio 11 GPIO_ACTIVE_LOW>;
 			function = LED_FUNCTION_STATUS;
 			color = <LED_COLOR_ID_GREEN>;
-			trigger-sources = "timer";
-			default-state = "on";
 		};
 
 		led_status_red: red {

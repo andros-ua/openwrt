@@ -562,7 +562,7 @@ define Device/clt_r30b1-112m
   DEVICE_MODEL := CLT-R30B1 (112m ubi)
   DEVICE_DTS := mt7981b-clt-r30b1-112m
   DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-mt76
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
   SUPPORTED_DEVICES := clt,r30b1-112m
   UBINIZE_OPTS := -E 5
   BLOCKSIZE := 128k
@@ -580,7 +580,7 @@ define Device/clt_r30b1
   DEVICE_MODEL := CLT-R30B1
   DEVICE_DTS := mt7981b-clt-r30b1
   DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-mt76
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
   SUPPORTED_DEVICES := clt,r30b1
   UBINIZE_OPTS := -E 5
   BLOCKSIZE := 128k
