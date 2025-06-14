@@ -557,13 +557,12 @@ define Device/cetron_ct3003
 endef
 TARGET_DEVICES += cetron_ct3003
 
-define Device/creatlentem_clt-r30b1-112m
+define Device/clt_r30b1-112m
   DEVICE_VENDOR := CreatLentem
   DEVICE_MODEL := CLT-R30B1 (112m ubi)
   DEVICE_DTS := mt7981b-clt-r30b1-112m
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
-  SUPPORTED_DEVICES := clt,r30b1-112m
   UBINIZE_OPTS := -E 5
   BLOCKSIZE := 128k
   PAGESIZE := 2048
@@ -573,15 +572,14 @@ define Device/creatlentem_clt-r30b1-112m
   IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
-TARGET_DEVICES += creatlentem_clt-r30b1-112m
+TARGET_DEVICES += clt_r30b1-112m
 
-define Device/creatlentem_clt-r30b1
+define Device/clt_r30b1
   DEVICE_VENDOR := CreatLentem
   DEVICE_MODEL := CLT-R30B1
   DEVICE_DTS := mt7981b-clt-r30b1
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
-  SUPPORTED_DEVICES := clt,r30b1
   UBINIZE_OPTS := -E 5
   BLOCKSIZE := 128k
   PAGESIZE := 2048
@@ -591,7 +589,7 @@ define Device/creatlentem_clt-r30b1
   IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
-TARGET_DEVICES += creatlentem_clt-r30b1
+TARGET_DEVICES += clt_r30b1
 
 define Device/cmcc_a10-stock
   DEVICE_VENDOR := CMCC
