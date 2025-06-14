@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /dts-v1/;
 
-#include "mt7981b-clt-r30b1-base.dtsi"
+#include "mt7981b-clt-r30b1-common.dtsi"
 
  / {
     model = "CLT-R30B1 (112m ubi)";
