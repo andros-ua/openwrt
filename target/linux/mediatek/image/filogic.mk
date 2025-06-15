@@ -559,7 +559,7 @@ TARGET_DEVICES += cetron_ct3003
 
 define Device/clt_r30b1-112m
   DEVICE_VENDOR := CreatLentem
-  DEVICE_MODEL := CLT-R30B1 (112m ubi)
+  DEVICE_MODEL := CLT-R30B1 (112M ubi)
   DEVICE_DTS := mt7981b-clt-r30b1-112m
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
