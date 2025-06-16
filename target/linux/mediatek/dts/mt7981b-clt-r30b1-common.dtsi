@@ -39,7 +39,6 @@
 			label = "wps";
 			gpios = <&pio 0 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WPS_BUTTON>;
-			linux,input-type = <EV_SW>;
 			debounce-interval = <60>;
 		};
 	};
