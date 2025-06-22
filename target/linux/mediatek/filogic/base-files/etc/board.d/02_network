@@ -165,8 +165,8 @@ mediatek_setup_macs()
 	local label_mac=""
 
 	case $board in
-	clt-r30b1|\
-	clt-r30b1-112m)
+	clt,r30b1|\
+	clt,r30b1-112m)
 		local part_name="Factory"
 		lan_mac=$(mtd_get_mac_binary $part_name 0x2A)
 		wan_mac=$(mtd_get_mac_binary $part_name 0x24)
