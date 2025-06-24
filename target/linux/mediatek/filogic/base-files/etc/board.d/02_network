@@ -166,14 +166,6 @@ mediatek_setup_macs()
 	local label_mac=""
 
 	case $board in
-	clt,r30b1|\
-	clt,r30b1-112m)
-		local part_name="Factory"
-		lan_mac=$(mtd_get_mac_binary $part_name 0x2A)
-		wan_mac=$(mtd_get_mac_binary $part_name 0x24)
-		label_mac=$lan_mac
-		local wifi_mac="$(mtd_get_mac_binary $part_name 0x04)"
-		;;
 	acer,predator-w6|\
 	acer,predator-w6d|\
 	acer,vero-w6m)
@@ -184,6 +176,12 @@ mediatek_setup_macs()
 	bananapi,bpi-r3-mini|\
 	bananapi,bpi-r4)
 		wan_mac=$(macaddr_add $(cat /sys/class/net/eth0/address) 1)
+		;;
+	clt,r30b1|\
+	clt,r30b1-112m)
+		lan_mac=$(mtd_get_mac_binary "Factory" 0x2A)
+		wan_mac=$(mtd_get_mac_binary "Factory" 0x24)
+		label_mac=$wan_mac
 		;;
 	h3c,magic-nx30-pro)
 		wan_mac=$(mtd_get_mac_ascii pdt_data_1 ethaddr)
