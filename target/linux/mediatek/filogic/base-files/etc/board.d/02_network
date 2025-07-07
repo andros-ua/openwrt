@@ -11,7 +11,7 @@ mediatek_setup_interfaces()
 	abt,asr3000|\
 	cmcc,rax3000m|\
 	creatlentem,clt-r30b1|\
-        creatlentem,clt-r30b1-112m|\
+	creatlentem,clt-r30b1-112m|\
 	h3c,magic-nx30-pro|\
 	netis,nx31|\
 	nokia,ea0326gmp|\
@@ -178,7 +178,7 @@ mediatek_setup_macs()
 		wan_mac=$(macaddr_add $(cat /sys/class/net/eth0/address) 1)
 		;;
 	creatlentem,clt-r30b1|\
-        creatlentem,clt-r30b1-112m|\
+	creatlentem,clt-r30b1-112m)
 		lan_mac=$(mtd_get_mac_binary "Factory" 0x2A)
 		wan_mac=$(mtd_get_mac_binary "Factory" 0x24)
 		label_mac=$wan_mac
