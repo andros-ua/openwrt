@@ -183,6 +183,8 @@ case "$board" in
 		[ "$PHYNBR" = "0" ] && echo "$addr" > /sys${DEVPATH}/macaddress
 		[ "$PHYNBR" = "1" ] && macaddr_add $addr 1 > /sys${DEVPATH}/macaddress
 		;;
+	creatlentem,clt-r30b1|\
+	creatlentem,clt-r30b1-112m|\
 	routerich,ax3000|\
 	routerich,ax3000-ubootmod|\
 	zbtlink,zbt-z8102ax|\
