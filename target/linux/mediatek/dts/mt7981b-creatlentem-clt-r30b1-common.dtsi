@@ -10,7 +10,6 @@
 
 / {
 	aliases {
-		label-mac-device = &gmac0;
 		led-boot = &led_status_red;
 		led-failsafe = &led_status_red;
 		led-running = &led_status_green;
