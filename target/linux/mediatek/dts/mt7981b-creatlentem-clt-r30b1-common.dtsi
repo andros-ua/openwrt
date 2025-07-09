@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+
 /dts-v1/;
 
 #include <dt-bindings/gpio/gpio.h>
@@ -8,22 +9,19 @@
 #include "mt7981b.dtsi"
 
 / {
-    aliases {
-        serial0 = &uart0;
-        label-mac-device = &gmac0;
+	aliases {
+		label-mac-device = &gmac0;
+		led-boot = &led_status_red;
+		led-failsafe = &led_status_red;
+		led-running = &led_status_green;
+		led-upgrade = &led_status_green;
+		serial0 = &uart0;
+	};
 
-        led-boot = &led_status_red;
-	led-failsafe = &led_status_red;
-	led-running = &led_status_green;
-	led-upgrade = &led_status_green;
-
-    };
-
-    chosen {
-	   stdout-path = "serial0:115200n8";
-	   bootargs = "console=ttyS0,115200n1 loglevel=8 earlycon=uart8250,mmio32,0x11002000";
-    };
-
+	chosen {
+		stdout-path = "serial0:115200n8";
+		bootargs = "console=ttyS0,115200n1 loglevel=8 earlycon=uart8250,mmio32,0x11002000";
+	};
 
 	gpio-keys {
 		compatible = "gpio-keys";
@@ -43,7 +41,7 @@
 		};
 	};
 
-    leds {
+	leds {
 		compatible = "gpio-leds";
 
 		led_status_green: green {
@@ -61,9 +59,9 @@
 		};
 	};
 
-    memory {
-        reg = <0 0x40000000 0 0x10000000>;
-    };
+	memory {
+		reg = <0 0x40000000 0 0x10000000>;
+	};
 };
 
 &eth {
