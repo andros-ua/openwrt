@@ -3,7 +3,7 @@
 #include "mt7981b-creatlentem-clt-r30b1-common.dtsi"
 
 / {
-	model = "CreatLentem CLT-R30B1 (112M ubi)";
+	model = "CreatLentem CLT-R30B1 (OpenWrt)";
 	compatible = "creatlentem,clt-r30b1-112m", "mediatek,mt7981";
 };
 
