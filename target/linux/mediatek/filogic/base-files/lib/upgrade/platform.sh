@@ -198,6 +198,39 @@ platform_check_image() {
 	bananapi,bpi-r4-poe|\
 	cmcc,rax3000m)
 		[ "$magic" != "d00dfeed" ] && {
+	cmcc,a10-ubootmod|\
+	cmcc,rax3000m|\
+	cudy,tr3000-v1-ubootmod|\
+	gatonetworks,gdsp|\
+	h3c,magic-nx30-pro|\
+	jcg,q30-pro|\
+	jdcloud,re-cp-03|\
+	mediatek,mt7981-rfb|\
+	mediatek,mt7988a-rfb|\
+	mercusys,mr90x-v1-ubi|\
+	nokia,ea0326gmp|\
+	openwrt,one|\
+	netcore,n60|\
+	qihoo,360t7|\
+	routerich,ax3000-ubootmod|\
+	tplink,tl-xdr4288|\
+	tplink,tl-xdr6086|\
+	tplink,tl-xdr6088|\
+	tplink,tl-xtr8488|\
+	xiaomi,mi-router-ax3000t-ubootmod|\
+	xiaomi,redmi-router-ax6000-ubootmod|\
+	xiaomi,mi-router-wr30u-ubootmod|\
+	zyxel,ex5601-t0-ubootmod)
+		fit_check_image "$1"
+		return $?
+		;;
+	creatlentem,clt-r30b1|\
+	creatlentem,clt-r30b1-112m|\
+	nradio,c8-668gl)
+		# tar magic `ustar`
+		magic="$(dd if="$1" bs=1 skip=257 count=5 2>/dev/null)"
+
+		[ "$magic" != "ustar" ] && {
 			echo "Invalid image type."
 			return 1
 		}
