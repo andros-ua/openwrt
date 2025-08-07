@@ -10,8 +10,6 @@ mediatek_setup_interfaces()
 	case $board in
 	abt,asr3000|\
 	cmcc,rax3000m|\
-	creatlentem,clt-r30b1|\
-	creatlentem,clt-r30b1-112m|\
 	h3c,magic-nx30-pro|\
 	netis,nx31|\
 	nokia,ea0326gmp|\
@@ -41,6 +39,8 @@ mediatek_setup_interfaces()
 	cmcc,a10-stock|\
 	cmcc,a10-ubootmod|\
 	confiabits,mt7981|\
+	creatlentem,clt-r30b1|\
+	creatlentem,clt-r30b1-112m|\
 	cudy,wr3000-v1|\
 	jcg,q30-pro|\
 	keenetic,kn-3811|\
