@@ -179,9 +179,9 @@ static void rtl931x_stp_set(struct rtl838x_switch_priv *priv, u16 msti, u32 port
 	priv->r->exec_tbl0_cmd(cmd);
 }
 
-inline static int rtl931x_trk_mbr_ctr(int group)
+inline static int rtldsa_931x_trk_mbr_ctr(int group)
 {
-	return RTL931X_TRK_MBR_CTRL + (group << 2);
+	return RTL931X_TRK_MBR_CTRL + (group << 3);
 }
 
 static void rtl931x_vlan_tables_read(u32 vlan, struct rtl838x_vlan_info *info)
@@ -198,40 +198,37 @@ static void rtl931x_vlan_tables_read(u32 vlan, struct rtl838x_vlan_info *info)
 	rtl_table_release(r);
 
 	pr_debug("VLAN_READ %d: %08x %08x %08x %08x\n", vlan, v, w, x, y);
-	info->tagged_ports = ((u64) v) << 25 | (w >> 7);
+	info->member_ports = ((u64) v) << 25 | (w >> 7);
 	info->profile_id = (x >> 16) & 0xf;
 	info->fid = w & 0x7f;				/* AKA MSTI depending on context */
 	info->hash_uc_fid = !!(x & BIT(31));
 	info->hash_mc_fid = !!(x & BIT(30));
 	info->if_id = (x >> 20) & 0x3ff;
-	info->profile_id = (x >> 16) & 0xf;
 	info->multicast_grp_mask = x & 0xffff;
-	if (x & BIT(31))
+	if (y & BIT(31))
 		info->l2_tunnel_list_id = y >> 18;
 	else
 		info->l2_tunnel_list_id = -1;
-	pr_debug("%s read tagged %016llx, profile-id %d, uc %d, mc %d, intf-id %d\n", __func__,
-		info->tagged_ports, info->profile_id, info->hash_uc_fid, info->hash_mc_fid,
+	pr_debug("%s read member %016llx, profile-id %d, uc %d, mc %d, intf-id %d\n", __func__,
+		info->member_ports, info->profile_id, info->hash_uc_fid, info->hash_mc_fid,
 		info->if_id);
 
 	/* Read UNTAG table via table register 3 */
 	r = rtl_table_get(RTL9310_TBL_3, 0);
 	rtl_table_read(r, vlan);
-	v = ((u64)sw_r32(rtl_table_data(r, 0))) << 25;
-	v |= sw_r32(rtl_table_data(r, 1)) >> 7;
-	rtl_table_release(r);
+	info->untagged_ports = ((u64)sw_r32(rtl_table_data(r, 0))) << 25;
+	info->untagged_ports |= sw_r32(rtl_table_data(r, 1)) >> 7;
 
-	info->untagged_ports = v;
+	rtl_table_release(r);
 }
 
 static void rtl931x_vlan_set_tagged(u32 vlan, struct rtl838x_vlan_info *info)
 {
+	struct table_reg *r;
 	u32 v, w, x, y;
-	/* Access VLAN table (1) via register 0 */
-	struct table_reg *r = rtl_table_get(RTL9310_TBL_0, 3);
 
-	v = info->tagged_ports >> 25;
-	w = (info->tagged_ports & 0x1fffff) << 7;
+	v = info->member_ports >> 25;
+	w = (info->member_ports & GENMASK(24, 0)) << 7;
 	w |= info->fid & 0x7f;
 	x = info->hash_uc_fid ? BIT(31) : 0;
 	x |= info->hash_mc_fid ? BIT(30) : 0;
@@ -245,6 +242,7 @@ static void rtl931x_vlan_set_tagged(u32 vlan, struct rtl838x_vlan_info *info)
 		y = 0;
 	}
 
+	r = rtl_table_get(RTL9310_TBL_0, 3);
 	sw_w32(v, rtl_table_data(r, 0));
 	sw_w32(w, rtl_table_data(r, 1));
 	sw_w32(x, rtl_table_data(r, 2));
@@ -869,6 +867,26 @@ static void rtl931x_l2_learning_setup(void)
 
 	/* Limit learning to maximum: 64k entries, after that just flood (bits 0-2) */
 	sw_w32((0xffff << 3) | FORWARD, RTL931X_L2_LRN_CONSTRT_CTRL);
+}
+
+static void rtldsa_931x_enable_learning(int port, bool enable)
+{
+	/* Limit learning to maximum: 64k entries */
+	sw_w32_mask(GENMASK(18, 3), enable ? (0xfffe << 3) : 0,
+		    RTL931X_L2_LRN_PORT_CONSTRT_CTRL + port * 4);
+}
+
+static void rtldsa_931x_enable_flood(int port, bool enable)
+{
+	/* 0: forward
+	 * 1: drop
+	 * 2: trap to local CPU
+	 * 3: copy to local CPU
+	 * 4: trap to master CPU
+	 * 5: copy to master CPU
+	 */
+	sw_w32_mask(GENMASK(2, 0), enable ? 0 : 1,
+		    RTL931X_L2_LRN_PORT_CONSTRT_CTRL + port * 4);
 }
 
 static u64 rtl931x_read_mcast_pmask(int idx)
@@ -1641,7 +1659,7 @@ const struct rtl838x_reg rtl931x_reg = {
 	.l2_ctrl_1 = RTL931X_L2_AGE_CTRL,
 	.l2_port_aging_out = RTL931X_L2_PORT_AGE_CTRL,
 	.set_ageing_time = rtl931x_set_ageing_time,
-	/* .smi_poll_ctrl does not exist */
+	.smi_poll_ctrl = RTL931X_SMI_PORT_POLLING_CTRL,
 	.l2_tbl_flush_ctrl = RTL931X_L2_TBL_FLUSH_CTRL,
 	.exec_tbl0_cmd = rtl931x_exec_tbl0_cmd,
 	.exec_tbl1_cmd = rtl931x_exec_tbl1_cmd,
@@ -1677,7 +1695,7 @@ const struct rtl838x_reg rtl931x_reg = {
 	.vlan_port_keep_tag_set = rtl931x_vlan_port_keep_tag_set,
 	.vlan_port_pvidmode_set = rtl931x_vlan_port_pvidmode_set,
 	.vlan_port_pvid_set = rtl931x_vlan_port_pvid_set,
-	.trk_mbr_ctr = rtl931x_trk_mbr_ctr,
+	.trk_mbr_ctr = rtldsa_931x_trk_mbr_ctr,
 	.set_vlan_igr_filter = rtl931x_set_igr_filter,
 	.set_vlan_egr_filter = rtl931x_set_egr_filter,
 	.set_distribution_algorithm = rtl931x_set_distribution_algorithm,
@@ -1692,4 +1710,6 @@ const struct rtl838x_reg rtl931x_reg = {
 	.l2_learning_setup = rtl931x_l2_learning_setup,
 	.l3_setup = rtl931x_l3_setup,
 	.led_init = rtldsa_931x_led_init,
+	.enable_learning = rtldsa_931x_enable_learning,
+	.enable_flood = rtldsa_931x_enable_flood,
 };
