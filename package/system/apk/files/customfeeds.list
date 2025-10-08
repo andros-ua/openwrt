@@ -1,3 +1,4 @@
 # add your custom package feeds here
 #
 # http://www.example.com/path/to/files/packages.adb
+https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/kmods/6.12.51-1-457143262baaa3b3c3261909ce3dcb61/packages.adb
