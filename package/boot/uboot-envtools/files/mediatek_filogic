@@ -35,6 +35,7 @@ ubootenv_add_ubi_default() {
 case "$board" in
 abt,asr3000|\
 cmcc,a10-ubootmod|\
+comfast,cf-wr632ax-ubootmod|\
 cudy,tr3000-v1-ubootmod|\
 h3c,magic-nx30-pro|\
 jcg,q30-pro|\
@@ -94,6 +95,7 @@ comfast,cf-e393ax)
 	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x20000" "0x80000"
 	;;
 cetron,ct3003|\
+comfast,cf-wr632ax|\
 edgecore,eap111|\
 netgear,wax220|\
 zbtlink,zbt-z8102ax|\
