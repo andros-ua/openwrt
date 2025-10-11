@@ -78,7 +78,6 @@ struct rtpcs_config {
 	int mac_tx_pause_sts;
 	const struct phylink_pcs_ops *pcs_ops;
 	int (*set_autoneg)(struct rtpcs_ctrl *ctrl, int sds, unsigned int neg_mode);
-	int (*setup_serdes)(struct rtpcs_ctrl *ctrl, int sds, phy_interface_t mode);
 };
 
 static int rtpcs_sds_to_mmd(int sds_page, int sds_regnum)
@@ -93,48 +92,16 @@ static int rtpcs_sds_read(struct rtpcs_ctrl *ctrl, int sds, int page, int regnum
 	return mdiobus_c45_read(ctrl->bus, sds, MDIO_MMD_VEND1, mmd_regnum);
 }
 
-__attribute__((unused))
-static int rtpcs_sds_read_bits(struct rtpcs_ctrl *ctrl, int sds, int page,
-			       int regnum, int bithigh, int bitlow)
-{
-	int mask, val;
-
-	WARN_ON(bithigh < bitlow);
-
-	mask = GENMASK(bithigh, bitlow);
-	val = rtpcs_sds_read(ctrl, sds, page, regnum);
-	if (val < 0)
-		return val;
-
-	return (val & mask) >> bitlow;
-}
-
-__attribute__((unused))
-static int rtpcs_sds_write(struct rtpcs_ctrl *ctrl, int sds, int page, int regnum, u16 value)
-{
-	int mmd_regnum = rtpcs_sds_to_mmd(page, regnum);
-
-	return mdiobus_c45_write(ctrl->bus, sds, MDIO_MMD_VEND1, mmd_regnum, value);
-}
-
-__attribute__((unused))
-static int rtpcs_sds_write_bits(struct rtpcs_ctrl *ctrl, int sds, int page,
-				int regnum, int bithigh, int bitlow, u16 value)
-{
-	int mask, reg;
-
-	WARN_ON(bithigh < bitlow);
-
-	mask = GENMASK(bithigh, bitlow);
-	reg = rtpcs_sds_read(ctrl, sds, page, regnum);
-	if (reg < 0)
-		return reg;
-
-	reg = (reg & ~mask);
-	reg |= (value << bitlow) & mask;
-
-	return rtpcs_sds_write(ctrl, sds, page, regnum, reg);
-}
+/*
+ * For later use, when the SerDes registers need to be written ...
+ *
+ * static int rtpcs_sds_write(struct rtpcs_ctrl *ctrl, int sds, int page, int regnum, u16 value)
+ * {
+ *	int mmd_regnum = rtpcs_sds_to_mmd(page, regnum);
+ *
+ *	return mdiobus_c45_write(ctrl->bus, sds, MDIO_MMD_VEND1, mmd_regnum, value);
+ * }
+ */
 
 static int rtpcs_sds_modify(struct rtpcs_ctrl *ctrl, int sds, int page, int regnum,
 			    u16 mask, u16 set)
@@ -254,12 +221,6 @@ static int rtpcs_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
 		 phy_modes(interface), link->port, link->sds);
 
 	mutex_lock(&ctrl->lock);
-
-	if (ctrl->cfg->setup_serdes) {
-		ret = ctrl->cfg->setup_serdes(ctrl, link->sds, interface);
-		if (ret < 0)
-			goto out;
-	}
 
 	if (ctrl->cfg->set_autoneg) {
 		ret = ctrl->cfg->set_autoneg(ctrl, link->sds, neg_mode);

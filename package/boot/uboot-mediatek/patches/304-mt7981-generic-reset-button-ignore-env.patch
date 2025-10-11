@@ -1,26 +1,27 @@
 --- a/board/mediatek/mt7981/mt7981_rfb.c
 +++ b/board/mediatek/mt7981/mt7981_rfb.c
-@@ -4,11 +4,43 @@
-  * Author: Sam Shih <sam.shih@mediatek.com>
+@@ -5,9 +5,16 @@
   */
  
-+#include <config.h>
+ #include <config.h>
 +#include <dm.h>
 +#include <button.h>
-+#include <env.h>
-+#include <init.h>
+ #include <env.h>
+ #include <init.h>
+ #include <asm/global_data.h>
 +#include <linux/delay.h>
- #include <mtd.h>
- #include <linux/mtd/mtd.h>
- #include <nmbm/nmbm.h>
- #include <nmbm/nmbm-mtd.h>
- 
++
 +#ifndef CONFIG_RESET_BUTTON_LABEL
 +#define CONFIG_RESET_BUTTON_LABEL "reset"
 +#endif
-+
-+int board_late_init(void)
-+{
+ 
+ #include <mtd.h>
+ #include <linux/mtd/mtd.h>
+@@ -23,7 +30,22 @@ int board_init(void)
+ 
+ int board_late_init(void)
+ {
+-	gd->env_valid = 1; //to load environment variable from persistent store
 +	struct udevice *dev;
 +
 +	gd->env_valid = ENV_VALID;
@@ -37,10 +38,6 @@
 +			gd->env_valid = ENV_INVALID;
 +		}
 +	}
-+	env_relocate();
-+	return 0;
-+}
-+
- int board_nmbm_init(void)
- {
- #ifdef CONFIG_ENABLE_NAND_NMBM
+ 	env_relocate();
+ 	return 0;
+ }

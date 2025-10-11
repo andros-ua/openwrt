@@ -408,7 +408,8 @@ else
 	  $$(APK_SCRIPTS_$(1)) \
 	  --info "depends:$$(foreach depends,$$(subst $$(comma),$$(space),$$(subst $$(space),,$$(subst $$(paren_right),,$$(subst $$(paren_left),,$$(Package/$(1)/DEPENDS))))),$$(depends))" \
 	  --files "$$(IDIR_$(1))" \
-	  --output "$$(PACK_$(1))"
+	  --output "$$(PACK_$(1))" \
+	  --sign "$(BUILD_KEY_APK_SEC)"
 endif
 
 	@[ -f $$(PACK_$(1)) ]
