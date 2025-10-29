@@ -7,9 +7,6 @@
 	compatible = "creatlentem,clt-r30b1-112m", "mediatek,mt7981";
 };
 
-&partitions {
-	partition@580000 {
-		label = "ubi";
+&ubi {
 		reg = <0x0580000 0x7000000>;
-	};
 };

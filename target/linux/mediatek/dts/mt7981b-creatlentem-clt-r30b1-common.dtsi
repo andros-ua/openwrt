@@ -17,7 +17,7 @@
 		serial0 = &uart0;
 	};
 
-	chosen {
+	chosen: chosen {
 		stdout-path = "serial0:115200n8";
 	};
 
@@ -184,6 +184,10 @@
 				label = "FIP";
 				reg = <0x380000 0x200000>;
 				read-only;
+			};
+
+			ubi: partition@580000 {
+				label = "ubi";
 			};
 		};
 	};
