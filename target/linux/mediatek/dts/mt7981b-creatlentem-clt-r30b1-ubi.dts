@@ -16,7 +16,7 @@
 	partition@100000 {
 		label = "ubi";
 		reg = <0x100000 0x7f00000>;
-		compatible = "linux,ubi";
+		compatible = "linux,ibu";
 
 		volumes {
 			ubi_factory: ubi-volume-factory {

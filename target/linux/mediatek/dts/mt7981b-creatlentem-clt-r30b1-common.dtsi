@@ -69,8 +69,8 @@
 		reg = <0>;
 		phy-mode = "2500base-x";
 
-		nvmem-cell-names = "mac-address";
-		nvmem-cells = <&macaddr_factory_24 0>;
+/*		nvmem-cell-names = "mac-address";
+		nvmem-cells = <&macaddr_factory_24 0>; */
 
 		fixed-link {
 			speed = <2500>;
@@ -86,8 +86,8 @@
 		phy-mode = "gmii";
 		phy-handle = <&int_gbe_phy>;
 
-		nvmem-cell-names = "mac-address";
-		nvmem-cells = <&macaddr_factory_2a 0>;
+/*		nvmem-cell-names = "mac-address";
+		nvmem-cells = <&macaddr_factory_2a 0>; */
 	};
 
 };
@@ -132,7 +132,7 @@
 			partition@0 {
 				label = "BL2";
 				reg = <0x0 0x100000>;
-				read-only;
+/*				read-only; */
 			};
 		};
 	};
@@ -207,7 +207,7 @@
 	#size-cells = <0>;
 	nvmem-cells = <&eeprom_factory_0>;
 	nvmem-cell-names = "eeprom";
-	status = "okay";
+	status = "disabled";
 
 	band@0 {
 		reg = <0>;

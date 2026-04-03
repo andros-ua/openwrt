@@ -1021,7 +1021,7 @@ define Device/creatlentem_clt-r30b1-common
   DEVICE_ALT2_VENDOR := Livinet
   DEVICE_ALT2_MODEL := Li228
   DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  DEVICE_PACKAGES := kmod-mt7915e # kmod-mt7981-firmware mt7981-wo-firmware
   UBINIZE_OPTS := -E 5
   BLOCKSIZE := 128k
   PAGESIZE := 2048
@@ -1051,21 +1051,21 @@ endef
 TARGET_DEVICES += creatlentem_clt-r30b1
 
 define Device/creatlentem_clt-r30b1-ubi
-  DEVICE_VARIANT := (UBI)
-  DEVICE_ALT0_VARIANT := (UBI)
-  DEVICE_ALT1_VARIANT := (UBI)
-  DEVICE_ALT2_VARIANT := (UBI)
+  DEVICE_VARIANT := (UBI INSTALL)
+  DEVICE_ALT0_VARIANT := (UBI INSTALL)
+  DEVICE_ALT1_VARIANT := (UBI INSTALL)
+  DEVICE_ALT2_VARIANT := (UBI INSTALL)
   DEVICE_DTS := mt7981b-creatlentem-clt-r30b1-ubi
-  IMAGES := sysupgrade.itb
-  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  IMAGES := # sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -install.itb
   KERNEL := kernel-bin | gzip
   KERNEL_INITRAMFS := kernel-bin | lzma | \
 	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
-  IMAGE/sysupgrade.itb := append-kernel | \
-	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
-  ARTIFACTS := preloader.bin bl31-uboot.fip
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot creatlentem_clt-r30b1
+#  IMAGE/sysupgrade.itb := append-kernel | \
+#	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+#  ARTIFACTS := preloader.bin bl31-uboot.fip
+#  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3
+#  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot creatlentem_clt-r30b1
   $(call Device/creatlentem_clt-r30b1-common)
 endef
 TARGET_DEVICES += creatlentem_clt-r30b1-ubi
