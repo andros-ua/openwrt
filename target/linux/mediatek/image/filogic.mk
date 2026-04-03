@@ -978,19 +978,19 @@ endef
 TARGET_DEVICES += comfast_cf-wr632ax
 
 define Device/comfast_cf-wr632ax-ubi
-  DEVICE_VARIANT := (UBI)
+  DEVICE_VARIANT := (UBI INSTALL)
   DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubi
   UBOOTENV_IN_UBI := 1
-  IMAGES := sysupgrade.itb
-  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  IMAGES := # sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -install.itb
   KERNEL := kernel-bin | gzip
   KERNEL_INITRAMFS := kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
-  IMAGE/sysupgrade.itb := append-kernel | \
-	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
-  ARTIFACTS := preloader.bin bl31-uboot.fip
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
+  fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+#  IMAGE/sysupgrade.itb := append-kernel | \
+#  fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+#  ARTIFACTS := preloader.bin bl31-uboot.fip
+#  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+#  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
   $(call Device/comfast_cf-wr632ax-common)
 endef
 TARGET_DEVICES += comfast_cf-wr632ax-ubi

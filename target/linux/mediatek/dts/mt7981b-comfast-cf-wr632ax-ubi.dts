@@ -3,7 +3,7 @@
 #include "mt7981b-comfast-cf-wr632ax-common.dtsi"
 
 / {
-	model = "COMFAST CF-WR632AX (UBI)";
+	model = "COMFAST CF-WR632AX (UBI INSTALL)";
 	compatible = "comfast,cf-wr632ax-ubi", "mediatek,mt7981";
 };
 
@@ -16,7 +16,7 @@
 	partition@100000 {
 		label = "ubi";
 		reg = <0x100000 0x7f00000>;
-		compatible = "linux,ubi";
+		compatible = "linux,ibu";
 
 		volumes {
 			ubi_factory: ubi-volume-factory {

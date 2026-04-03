@@ -63,8 +63,8 @@
 		phy-mode = "2500base-x";
 		phy-handle = <&phy5>;
 
-		nvmem-cell-names = "mac-address";
-		nvmem-cells = <&macaddr_factory_e000 0>;
+/*		nvmem-cell-names = "mac-address";
+		nvmem-cells = <&macaddr_factory_e000 0>; */
 	};
 
 	gmac1: mac@1 {
@@ -74,8 +74,8 @@
 		phy-mode = "gmii";
 		phy-handle = <&int_gbe_phy>;
 
-		nvmem-cell-names = "mac-address";
-		nvmem-cells = <&macaddr_factory_e000 1>;
+/*		nvmem-cell-names = "mac-address";
+		nvmem-cells = <&macaddr_factory_e000 1>; */
 	};
 };
 
@@ -157,7 +157,7 @@
 			partition@0 {
 				label = "BL2";
 				reg = <0x00000 0x0100000>;
-				read-only;
+/*				read-only; */
 			};
 		};
 	};
@@ -184,7 +184,7 @@
 	#size-cells = <0>;
 	nvmem-cells = <&eeprom_factory_0>;
 	nvmem-cell-names = "eeprom";
-	status = "okay";
+/*	status = "okay"; */
 
 	band@0 {
 		reg = <0>;
