@@ -977,9 +977,9 @@ define Device/comfast_cf-wr632ax
 endef
 TARGET_DEVICES += comfast_cf-wr632ax
 
-define Device/comfast_cf-wr632ax-ubootmod
-  DEVICE_VARIANT := (OpenWrt U-Boot layout)
-  DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubootmod
+define Device/comfast_cf-wr632ax-ubi
+  DEVICE_VARIANT := (UBI)
+  DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubi
   UBOOTENV_IN_UBI := 1
   IMAGES := sysupgrade.itb
   KERNEL_INITRAMFS_SUFFIX := -recovery.itb
@@ -989,11 +989,11 @@ define Device/comfast_cf-wr632ax-ubootmod
   IMAGE/sysupgrade.itb := append-kernel | \
 	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
   ARTIFACTS := preloader.bin bl31-uboot.fip
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3
   ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
   $(call Device/comfast_cf-wr632ax-common)
 endef
-TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
+TARGET_DEVICES += comfast_cf-wr632ax-ubi
 
 define Device/confiabits_mt7981
   DEVICE_VENDOR := Confiabits

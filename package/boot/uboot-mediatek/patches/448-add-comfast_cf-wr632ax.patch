@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-comfast-cf-wr632ax.dts
-@@ -0,0 +1,153 @@
+@@ -0,0 +1,138 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +
 +/dts-v1/;
@@ -123,23 +123,8 @@
 +			};
 +
 +			partition@100000 {
-+				label = "u-boot-env";
-+				reg = <0x100000 0x80000>;
-+			};
-+
-+			partition@180000 {
-+				label = "factory";
-+				reg = <0x180000 0x200000>;
-+			};
-+
-+			partition@380000 {
-+				label = "fip";
-+				reg = <0x380000 0x200000>;
-+			};
-+
-+			partition@580000 {
 +				label = "ubi";
-+				reg = <0x580000 0x7a80000>;
++				reg = <0x100000 0x7f00000>;
 +				compatible = "linux,ubi";
 +			};
 +		};
@@ -274,10 +259,10 @@
 +bootcmd=if pstore check ; then run boot_recovery ; else run boot_ubi ; fi
 +bootconf=config-1
 +bootdelay=0
-+bootfile=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubootmod-initramfs-recovery.itb
-+bootfile_bl2=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubootmod-preloader.bin
-+bootfile_fip=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubootmod-bl31-uboot.fip
-+bootfile_upg=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubootmod-squashfs-sysupgrade.itb
++bootfile=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubi-initramfs-recovery.itb
++bootfile_bl2=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubi-preloader.bin
++bootfile_fip=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubi-bl31-uboot.fip
++bootfile_upg=openwrt-mediatek-filogic-comfast_cf-wr632ax-ubi-squashfs-sysupgrade.itb
 +bootled_pwr=red:status
 +bootled_rec=blue:status
 +bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
@@ -304,17 +289,17 @@
 +boot_tftp_production=tftpboot $loadaddr $bootfile_upg && env exists replacevol && iminfo $loadaddr && run ubi_write_production ; if env exists noboot ; then else bootm $loadaddr#$bootconf ; fi
 +boot_tftp_recovery=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run ubi_write_recovery ; if env exists noboot ; then else bootm $loadaddr#$bootconf ; fi
 +boot_tftp=tftpboot $loadaddr $bootfile && bootm $loadaddr#$bootconf
-+boot_tftp_write_fip=tftpboot $loadaddr $bootfile_fip && run mtd_write_fip && run reset_factory
++boot_tftp_write_fip=tftpboot $loadaddr $bootfile_fip && run ubi_write_fip && run reset_factory
 +boot_tftp_write_bl2=tftpboot $loadaddr $bootfile_bl2 && run mtd_write_bl2
 +reset_factory=ubi part ubi ; mw $loadaddr 0x0 0x800 ; ubi write $loadaddr ubootenv 0x800 ; ubi write $loadaddr ubootenv2 0x800
-+mtd_write_fip=mtd erase fip && mtd write fip $loadaddr
 +mtd_write_bl2=mtd erase bl2 && mtd write bl2 $loadaddr
 +ubi_create_env=ubi check ubootenv || ubi create ubootenv 0x100000 dynamic || run ubi_format ; ubi check ubootenv2 || ubi create ubootenv2 0x100000 dynamic || run ubi_format
-+ubi_format=ubi detach ; mtd erase ubi && ubi part ubi ; reset
++ubi_format=echo "UBI format disabled to protect factory data."
 +ubi_prepare_rootfs=if ubi check rootfs_data ; then else if env exists rootfs_data_max ; then ubi create rootfs_data $rootfs_data_max dynamic || ubi create rootfs_data - dynamic ; else ubi create rootfs_data - dynamic ; fi ; fi
 +ubi_read_production=ubi read $loadaddr fit && iminfo $loadaddr && run ubi_prepare_rootfs
 +ubi_read_recovery=ubi check recovery && ubi read $loadaddr recovery
 +ubi_remove_rootfs=ubi check rootfs_data && ubi remove rootfs_data
++ubi_write_fip=run ubi_remove_rootfs ; ubi check fip && ubi remove fip ; ubi create fip 0x200000 static ; ubi write $loadaddr fip 0x200000
 +ubi_write_production=ubi check fit && ubi remove fit ; run ubi_remove_rootfs ; ubi create fit $filesize dynamic && ubi write $loadaddr fit $filesize
 +ubi_write_recovery=ubi check recovery && ubi remove recovery ; run ubi_remove_rootfs ; ubi create recovery $filesize dynamic && ubi write $loadaddr recovery $filesize
 +_init_env=setenv _init_env ; run ubi_create_env ; saveenv ; saveenv
