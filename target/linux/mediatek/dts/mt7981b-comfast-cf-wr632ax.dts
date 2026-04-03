@@ -65,4 +65,4 @@
 		reg = <0x580000 0x4000000>;
 		compatible = "linux,ubi";
 	};
-}
+};
