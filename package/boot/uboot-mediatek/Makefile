@@ -309,10 +309,10 @@ define U-Boot/mt7981_comfast_cf-wr632ax
   BUILD_DEVICES:=comfast_cf-wr632ax-ubootmod
   UBOOT_CONFIG:=mt7981_comfast_cf-wr632ax
   UBOOT_IMAGE:=u-boot.fip
-  BL2_BOOTDEV:=spim-nand
+  BL2_BOOTDEV:=spim-nand-ubi
   BL2_SOC:=mt7981
   BL2_DDRTYPE:=ddr3
-  DEPENDS:=+trusted-firmware-a-mt7981-spim-nand-ddr3
+  DEPENDS:=+trusted-firmware-a-mt7981-spim-nand-ubi-ddr3
 endef
 
 define U-Boot/mt7981_cudy_tr3000-v1
