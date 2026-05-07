@@ -295,6 +295,7 @@ platform_check_image() {
 	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
 	comfast,cf-wr630ax-ubi|\
+	comfast,cf-wr631ax-ubi|\
 	comfast,cf-wr632ax-ubi|\
 	comfast,cf-wr632ax-ubootmod|\
 	comfast,cf-wr633ax-ubi|\
