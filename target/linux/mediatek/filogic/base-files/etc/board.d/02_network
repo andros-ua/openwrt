@@ -48,6 +48,8 @@ mediatek_setup_interfaces()
 	cetron,ct3003|\
 	cmcc,a10-stock|\
 	cmcc,a10-ubootmod|\
+	comfast,cf-wr630ax|\
+	comfast,cf-wr630ax-ubi|\
 	confiabits,mt7981|\
 	creatlentem,clt-r30b1|\
 	creatlentem,clt-r30b1-112m|\
