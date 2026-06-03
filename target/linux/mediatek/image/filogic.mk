@@ -1020,24 +1020,22 @@ TARGET_DEVICES += comfast_cf-wr632ax
 define Device/comfast_cf-wr632ax-ubi
   DEVICE_VARIANT := (UBI)
   DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubi
-  UBOOTENV_IN_UBI := 1
-  IMAGES := sysupgrade.itb
-  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
-  KERNEL := kernel-bin | gzip
-  KERNEL_INITRAMFS := kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
-  IMAGE/sysupgrade.itb := append-kernel | \
-	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
-  ARTIFACTS := preloader.bin bl31-uboot.fip
   ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3-1866
   ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax-ubi
-  $(call Device/comfast_cf-wr632ax-common)
+  $(call Device/comfast_cf-wr632ax-ubootmod-common)
 endef
 TARGET_DEVICES += comfast_cf-wr632ax-ubi
 
 define Device/comfast_cf-wr632ax-ubootmod
   DEVICE_VARIANT := (OpenWrt U-Boot layout)
   DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubootmod
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
+  $(call Device/comfast_cf-wr632ax-ubootmod-common)
+endef
+TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
+
+define Device/comfast_cf-wr632ax-ubootmod-common
   UBOOTENV_IN_UBI := 1
   IMAGES := sysupgrade.itb
   KERNEL_INITRAMFS_SUFFIX := -recovery.itb
@@ -1047,11 +1045,8 @@ define Device/comfast_cf-wr632ax-ubootmod
   IMAGE/sysupgrade.itb := append-kernel | \
 	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
   ARTIFACTS := preloader.bin bl31-uboot.fip
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3-1866mhz
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
   $(call Device/comfast_cf-wr632ax-common)
 endef
-TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
 
 define Device/comfast_cf-wr633ax-common
   DEVICE_VENDOR := COMFAST
