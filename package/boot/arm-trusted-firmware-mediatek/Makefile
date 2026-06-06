@@ -223,6 +223,7 @@ define Trusted-Firmware-A/mt7981-spim-nand-ddr3
   BUILD_SUBTARGET:=filogic
   PLAT:=mt7981
   DDR_TYPE:=ddr3
+  DDR3_FREQ_1866:=1
 endef
 
 define Trusted-Firmware-A/mt7981-cudy-tr3000-v1
