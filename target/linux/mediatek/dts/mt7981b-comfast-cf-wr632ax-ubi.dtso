@@ -1,0 +1,93 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+
+/dts-v1/;
+/plugin/;
+&{/} {
+	model = "COMFAST CF-WR632AX (UBI)";
+};
+
+&chosen {
+	rootdisk = <&ubi_rootdisk>;
+};
+
+&gmac0 {
+	nvmem-cells = <&macaddr_factory_e000 0>;
+};
+
+&gmac1 {
+	nvmem-cells = <&macaddr_factory_e000 1>;
+};
+
+&partitions {
+	partition@100000 {
+		compatible = "linux,ubi";
+		label = "ubi";
+		reg = <0x100000 0x7f00000>;
+
+		volumes {
+			ubi_factory: ubi-volume-factory {
+				volname = "factory";
+			};
+
+			ubi_rootdisk: ubi-volume-fit {
+				volname = "fit";
+			};
+
+			ubi-volume-ubootenv {
+				volname = "ubootenv";
+				nvmem-layout {
+					compatible = "u-boot,env-redundant-bool";
+				};
+			};
+
+			ubi-volume-ubootenv2 {
+				volname = "ubootenv2";
+				nvmem-layout {
+					compatible = "u-boot,env-redundant-bool";
+				};
+			};
+		};
+	};
+};
+
+&ubi_factory {
+	nvmem-layout {
+		compatible = "fixed-layout";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		eeprom_factory_0: eeprom@0 {
+			reg = <0x0 0x1000>;
+		};
+
+		macaddr_factory_4: macaddr@4 {
+			reg = <0x4 0x6>;
+			compatible = "mac-base";
+			#nvmem-cell-cells = <1>;
+		};
+
+		macaddr_factory_8000: macaddr@8000 {
+			reg = <0x8000 0x6>;
+			compatible = "mac-base";
+			#nvmem-cell-cells = <1>;
+		};
+
+		macaddr_factory_e000: macaddr@e000 {
+			compatible = "mac-base";
+			reg = <0xe000 0x6>;
+			#nvmem-cell-cells = <1>;
+		};
+	};
+};
+
+&wifi {
+	nvmem-cells = <&eeprom_factory_0>;
+
+	band@0 {
+		nvmem-cells = <&macaddr_factory_4 0>;
+	};
+
+	band@1 {
+		nvmem-cells = <&macaddr_factory_8000 0>;
+	};
+};

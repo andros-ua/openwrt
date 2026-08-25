@@ -1107,33 +1107,19 @@ define Device/comfast_cf-wr632ax-common
 endef
 
 define Device/comfast_cf-wr632ax
-  DEVICE_DTS := mt7981b-comfast-cf-wr632ax
+  $(call Device/comfast_cf-wr632ax-common)
+  DEVICE_DTS := mt7981b-comfast-cf-wr632ax-stock
   IMAGE_SIZE := 65536k
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
   SUPPORTED_DEVICES += cf-wr632ax
-  $(call Device/comfast_cf-wr632ax-common)
 endef
 TARGET_DEVICES += comfast_cf-wr632ax
 
-define Device/comfast_cf-wr632ax-ubi
-  DEVICE_VARIANT := (UBI)
-  DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubi
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3-1866
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax-ubi
-  $(call Device/comfast_cf-wr632ax-ubootmod-common)
-endef
-TARGET_DEVICES += comfast_cf-wr632ax-ubi
-
 define Device/comfast_cf-wr632ax-ubootmod
+  $(call Device/comfast_cf-wr632ax-common)
   DEVICE_VARIANT := (OpenWrt U-Boot layout)
   DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubootmod
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3-1866
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
-  $(call Device/comfast_cf-wr632ax-ubootmod-common)
-endef
-TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
-
-define Device/comfast_cf-wr632ax-ubootmod-common
+  DEVICE_DTS_OVERLAY := mt7981b-comfast-cf-wr632ax mt7981b-comfast-cf-wr632ax-ubi
   UBOOTENV_IN_UBI := 1
   IMAGES := sysupgrade.itb
   KERNEL_INITRAMFS_SUFFIX := -recovery.itb
@@ -1142,9 +1128,19 @@ define Device/comfast_cf-wr632ax-ubootmod-common
 	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
   IMAGE/sysupgrade.itb := append-kernel | \
 	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
-  ARTIFACTS := preloader.bin bl31-uboot.fip
-  $(call Device/comfast_cf-wr632ax-common)
+  ARTIFACTS := preloader.bin bl31-uboot.fip ubi-preloader.bin ubi-bl31-uboot.fip
+  DEVICE_DTS := mt7981b-comfast-cf-wr632ax-ubootmod
+  ARTIFACT/ubi-preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3-1866
+  ARTIFACT/ubi-bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax-ubi
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3-1866
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr632ax
+  DEVICE_COMPAT_VERSION := 1.1
+  DEVICE_COMPAT_MESSAGE := Boot configuration has been changed. Bootloader (FIP) MUST be \
+	upgraded at the same time as the firmware to avoid data corruption and getting bricked. \
+	Follow the guide: \
+	https://openwrt.org/toh/comfast/cf-wr632ax
 endef
+TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
 
 define Device/comfast_cf-xr186
   DEVICE_VENDOR := COMFAST
