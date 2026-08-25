@@ -12,6 +12,7 @@ case "$(board_name)" in
 	bananapi,bpi-r4-2g5|\
 	bananapi,bpi-r4-poe|\
 	cmcc,rax3000m|\
+	comfast,cf-wr632ax-ubootmod|\
 	mercusys,mr85x|\
 	routerich,ax3000|\
 	zbtlink,zbt-z8102ax-v2)
