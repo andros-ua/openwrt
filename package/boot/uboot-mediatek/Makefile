@@ -342,7 +342,7 @@ endef
 define U-Boot/mt7981_comfast_cf-wr632ax-ubi
   NAME:=COMFAST CF-WR632AX (UBI)
   BUILD_SUBTARGET:=filogic
-  BUILD_DEVICES:=comfast_cf-wr632ax-ubi
+  BUILD_DEVICES:=comfast_cf-wr632ax-ubootmod
   UBOOT_CONFIG:=mt7981_comfast_cf-wr632ax-ubi
   UBOOT_IMAGE:=u-boot.fip
   BL2_BOOTDEV:=spim-nand-ubi
