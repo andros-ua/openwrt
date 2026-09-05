@@ -54,11 +54,6 @@
 			gpios = <&pio 12 GPIO_ACTIVE_LOW>;
 		};
 	};
-
-	memory@40000000 {
-		reg = <0 0x40000000 0 0x10000000>;
-		device_type = "memory";
-	};
 };
 
 &eth {
