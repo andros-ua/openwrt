@@ -1106,20 +1106,14 @@ define Device/comfast_cf-wa933-common
 endef
 
 define Device/comfast_cf-wa933
-  DEVICE_VARIANT := 64M
   DEVICE_DTS := mt7981a-comfast-cf-wa933
   IMAGE_SIZE := 65536k
   $(call Device/comfast_cf-wa933-common)
 endef
 TARGET_DEVICES += comfast_cf-wa933
 
-define Device/comfast_cf-wa933-128m
-  DEVICE_VARIANT := 128M
-  DEVICE_DTS := mt7981a-comfast-cf-wa933-128m
-  IMAGE_SIZE := 117248k
   $(call Device/comfast_cf-wa933-common)
 endef
-TARGET_DEVICES += comfast_cf-wa933-128m
 
 define Device/comfast_cf-wr632ax-common
   DEVICE_VENDOR := COMFAST
