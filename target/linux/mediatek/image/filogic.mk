@@ -999,6 +999,26 @@ define Device/comfast_cf-wr632ax-ubootmod
 endef
 TARGET_DEVICES += comfast_cf-wr632ax-ubootmod
 
+define Device/comfast_cf-wr633ax-common
+  DEVICE_VENDOR := COMFAST
+  DEVICE_MODEL := CF-WR633AX
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+endef
+
+define Device/comfast_cf-wr633ax
+  DEVICE_DTS := mt7981a-comfast-cf-wr633ax
+  IMAGE_SIZE := 65536k
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  SUPPORTED_DEVICES += cf-wr633ax
+  $(call Device/comfast_cf-wr633ax-common)
+endef
+TARGET_DEVICES += comfast_cf-wr633ax
+
 define Device/confiabits_mt7981
   DEVICE_VENDOR := Confiabits
   DEVICE_MODEL := MT7981
