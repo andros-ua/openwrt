@@ -1096,6 +1096,24 @@ define Device/comfast_cf-wr633ax
 endef
 TARGET_DEVICES += comfast_cf-wr633ax
 
+define Device/comfast_cf-wr633ax-ubi
+  DEVICE_VARIANT := (UBI)
+  DEVICE_DTS := mt7981a-comfast-cf-wr633ax-ubi
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ubi-ddr3-1866
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot comfast_cf-wr633ax-ubi
+  $(call Device/comfast_cf-wr633ax-common)
+endef
+TARGET_DEVICES += comfast_cf-wr633ax-ubi
+
 define Device/confiabits_mt7981
   DEVICE_VENDOR := Confiabits
   DEVICE_MODEL := MT7981
