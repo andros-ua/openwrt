@@ -69,6 +69,7 @@ bazis,ax3000wm)
 	ucidef_set_led_netdev "internet" "internet" "blue:wan-online" "wan" "link"
 	;;
 comfast,cf-wr633ax|\
+comfast,cf-wr633ax-ubi|\
 elecom,wrc-x3000gs3)
 	ucidef_set_led_netdev "wan" "wan" "green:wan" "wan"
 	;;
