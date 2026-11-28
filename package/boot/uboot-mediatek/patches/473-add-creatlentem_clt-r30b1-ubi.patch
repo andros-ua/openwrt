@@ -298,7 +298,7 @@
 +
 +			partition@100000 {
 +				label = "ubi";
-+				reg = <0x100000 0x7f00000>;
++				reg = <0x100000 0x0>;
 +				compatible = "linux,ubi";
 +			};
 +		};
